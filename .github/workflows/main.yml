@@ -1,0 +1,37 @@
+name: 组播源采集合并
+
+on:
+  schedule:
+    - cron: '0 */4 * * *'  # 每四个小时的第 0 分钟运行
+  workflow_dispatch:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install requests
+
+      - name: Run iptv
+        run: python ${{ github.workspace }}/ZB.py  # 执行你的 Python 脚本
+
+      - name: 提交更改
+        run: |
+          git config --local user.email "actions@126.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "更新节目列表" || echo "没有需要提交的更改"
+          git push -f
