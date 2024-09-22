@@ -7,6 +7,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write  # 允许写入内容
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,7 +29,7 @@ jobs:
           pip install requests
 
       - name: Run iptv
-        run: python ${{ github.workspace }}/zb.py 
+        run: python ${{ github.workspace }}/zb.py  # 确保路径正确
 
       - name: 提交更改
         run: |
@@ -34,4 +37,4 @@ jobs:
           git config --local user.name "GitHub Action"
           git add .
           git commit -m "更新节目列表" || echo "没有需要提交的更改"
-          git push -f
+          git push -f https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/luoye20230624/test.git
