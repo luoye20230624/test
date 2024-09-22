@@ -26,7 +26,7 @@ jobs:
           pip install requests
 
       - name: Run iptv
-        run: python test/ZB.py  # 确保路径正确，可能需要相对路径
+        run: python ${{ github.workspace }}/zb.py 
 
       - name: 提交更改
         run: |
